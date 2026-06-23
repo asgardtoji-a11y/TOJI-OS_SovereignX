@@ -1,0 +1,100 @@
+name: Build & Release TOJI OS v2.0 + Sovereign X
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build TOJI OS
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y \
+            build-essential \
+            grub-pc-bin \
+            xorriso \
+            qemu-utils \
+            python3 python3-pip \
+            rustc cargo \
+            clang \
+            libgtk-3-dev \
+            liblzma-dev
+
+      - name: Install Flutter (for TOJI Desktop)
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+
+      - name: Build Kernel
+        working-directory: kernel
+        run: |
+          make clean
+          make
+
+      - name: Build System Services
+        working-directory: system
+        run: cargo build --release
+
+      - name: Build Sovereign X
+        working-directory: sovereign_x
+        run: |
+          pip3 install -r requirements.txt
+
+      - name: Build TOJI API
+        working-directory: toji_userland/api
+        run: |
+          pip3 install -r requirements.txt
+
+      - name: Build TOJI Desktop
+        working-directory: toji_userland/desktop
+        run: flutter build linux --release
+
+      - name: Assemble RootFS
+        run: |
+          mkdir -p rootfs/usr/bin
+          mkdir -p rootfs/sbin
+          cp kernel/toji_kernel.img boot/
+          cp system/target/release/* rootfs/sbin/
+          cp sovereign_x/src/sovereign_x_daemon rootfs/usr/bin/
+          cp toji_userland/api/main.py rootfs/usr/bin/toji_api
+          cp -r toji_userland/desktop/build/linux/x64/release/bundle/* rootfs/usr/bin/toji_desktop
+
+      - name: Build ISO
+        working-directory: build
+        run: |
+          chmod +x build_iso.sh
+          ./build_iso.sh
+
+      - name: Upload ISO Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: toji-os-iso
+          path: build/toji-os.iso
+
+  release:
+    name: Publish Release
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download ISO Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: toji-os-iso
+          path: .
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: toji-os.iso
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
