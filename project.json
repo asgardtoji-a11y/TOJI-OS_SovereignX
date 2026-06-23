@@ -1,0 +1,105 @@
+{
+  "name": "TOJI OS v2.0 + Sovereign X",
+  "description": "Standalone AI-native operating system with custom kernel, system services, Sovereign X AI core, TOJI API, Shell, and Windows 11–style Desktop.",
+  "public": false,
+
+  "fields": [
+    { "name": "Status", "type": "single_select", "options": ["Backlog", "Ready", "In Progress", "In Review", "Testing", "Done"] },
+    { "name": "Epic", "type": "single_select", "options": ["Base OS Skeleton", "Core Services", "Sovereign X", "TOJI API", "TOJI Desktop", "Memory", "Workflows", "Policies & Agents", "Release"] },
+    { "name": "Priority", "type": "single_select", "options": ["High", "Medium", "Low"] }
+  ],
+
+  "views": [
+    {
+      "name": "Kanban",
+      "type": "board",
+      "group_by": "Status",
+      "sort_by": "Priority"
+    },
+    {
+      "name": "Epics",
+      "type": "table",
+      "group_by": "Epic"
+    },
+    {
+      "name": "Timeline",
+      "type": "timeline",
+      "group_by": "Epic"
+    }
+  ],
+
+  "items": [
+
+    /* EPIC 1 — Base OS Skeleton */
+    { "title": "Integrate kernel into /kernel/", "epic": "Base OS Skeleton", "status": "Backlog", "priority": "High" },
+    { "title": "Configure kernel build to output toji_kernel.img", "epic": "Base OS Skeleton", "status": "Backlog", "priority": "High" },
+    { "title": "Create boot/grub.cfg", "epic": "Base OS Skeleton", "status": "Backlog", "priority": "Medium" },
+    { "title": "Implement build/build_iso.sh", "epic": "Base OS Skeleton", "status": "Backlog", "priority": "Medium" },
+    { "title": "Implement /sbin/toji-init (PID 1)", "epic": "Base OS Skeleton", "status": "Backlog", "priority": "High" },
+    { "title": "Mount rootfs, /proc, /sys", "epic": "Base OS Skeleton", "status": "Backlog", "priority": "High" },
+    { "title": "Launch temporary shell (/bin/sh)", "epic": "Base OS Skeleton", "status": "Backlog", "priority": "Low" },
+    { "title": "Create base rootfs directory structure", "epic": "Base OS Skeleton", "status": "Backlog", "priority": "Medium" },
+
+    /* EPIC 2 — Core Services */
+    { "title": "Implement logd", "epic": "Core Services", "status": "Backlog", "priority": "High" },
+    { "title": "Implement proc_manager", "epic": "Core Services", "status": "Backlog", "priority": "High" },
+    { "title": "Implement netd", "epic": "Core Services", "status": "Backlog", "priority": "Medium" },
+    { "title": "Implement pkgd (stub)", "epic": "Core Services", "status": "Backlog", "priority": "Low" },
+    { "title": "Implement ipc_broker", "epic": "Core Services", "status": "Backlog", "priority": "High" },
+    { "title": "Add service startup to toji-init", "epic": "Core Services", "status": "Backlog", "priority": "High" },
+
+    /* EPIC 3 — Sovereign X */
+    { "title": "Implement sovereign_x_daemon main loop", "epic": "Sovereign X", "status": "Backlog", "priority": "High" },
+    { "title": "Implement event handler (handle_event)", "epic": "Sovereign X", "status": "Backlog", "priority": "High" },
+    { "title": "Implement planner (plan_actions)", "epic": "Sovereign X", "status": "Backlog", "priority": "High" },
+    { "title": "Implement policy engine", "epic": "Sovereign X", "status": "Backlog", "priority": "Medium" },
+    { "title": "Implement memory backend", "epic": "Sovereign X", "status": "Backlog", "priority": "Medium" },
+    { "title": "Wire system events to Sovereign X", "epic": "Sovereign X", "status": "Backlog", "priority": "High" },
+    { "title": "Wire actions from Sovereign X to proc_manager", "epic": "Sovereign X", "status": "Backlog", "priority": "High" },
+    { "title": "Add Sovereign X startup to toji-init", "epic": "Sovereign X", "status": "Backlog", "priority": "Medium" },
+
+    /* EPIC 4 — TOJI API */
+    { "title": "Implement toji_api HTTP server", "epic": "TOJI API", "status": "Backlog", "priority": "High" },
+    { "title": "Implement WebSocket event stream", "epic": "TOJI API", "status": "Backlog", "priority": "Medium" },
+    { "title": "Implement /system/status", "epic": "TOJI API", "status": "Backlog", "priority": "High" },
+    { "title": "Implement /system/processes", "epic": "TOJI API", "status": "Backlog", "priority": "Medium" },
+    { "title": "Implement /sovereign/goals", "epic": "TOJI API", "status": "Backlog", "priority": "Medium" },
+    { "title": "Implement /sovereign/goal POST", "epic": "TOJI API", "status": "Backlog", "priority": "High" },
+    { "title": "Implement toji CLI wrapper", "epic": "TOJI API", "status": "Backlog", "priority": "Medium" },
+    { "title": "Map CLI commands to API endpoints", "epic": "TOJI API", "status": "Backlog", "priority": "Medium" },
+
+    /* EPIC 5 — TOJI Desktop */
+    { "title": "Create Flutter project for TOJI Desktop", "epic": "TOJI Desktop", "status": "Backlog", "priority": "High" },
+    { "title": "Implement Mica background container", "epic": "TOJI Desktop", "status": "Backlog", "priority": "Medium" },
+    { "title": "Implement Acrylic sidebar", "epic": "TOJI Desktop", "status": "Backlog", "priority": "Medium" },
+    { "title": "Implement top bar (logo, title, search, user icon)", "epic": "TOJI Desktop", "status": "Backlog", "priority": "Medium" },
+    { "title": "Implement status bar (CPU, RAM, network, Sovereign loop)", "epic": "TOJI Desktop", "status": "Backlog", "priority": "Low" },
+    { "title": "Implement Dashboard panel", "epic": "TOJI Desktop", "status": "Backlog", "priority": "High" },
+    { "title": "Implement Sovereign X panel", "epic": "TOJI Desktop", "status": "Backlog", "priority": "High" },
+    { "title": "Implement System panel", "epic": "TOJI Desktop", "status": "Backlog", "priority": "Medium" },
+    { "title": "Connect Desktop to toji_api", "epic": "TOJI Desktop", "status": "Backlog", "priority": "High" },
+
+    /* EPIC 6 — Memory */
+    { "title": "Implement memory_service backend", "epic": "Memory", "status": "Backlog", "priority": "High" },
+    { "title": "Implement vector search (optional)", "epic": "Memory", "status": "Backlog", "priority": "Low" },
+    { "title": "Expose memory endpoints in toji_api", "epic": "Memory", "status": "Backlog", "priority": "Medium" },
+    { "title": "Implement Memory panel in Desktop", "epic": "Memory", "status": "Backlog", "priority": "Medium" },
+
+    /* EPIC 7 — Workflows */
+    { "title": "Implement workflow engine (DAG runner)", "epic": "Workflows", "status": "Backlog", "priority": "High" },
+    { "title": "Expose workflow endpoints in toji_api", "epic": "Workflows", "status": "Backlog", "priority": "Medium" },
+    { "title": "Implement Workflows panel in Desktop", "epic": "Workflows", "status": "Backlog", "priority": "Medium" },
+
+    /* EPIC 8 — Policies & Agents */
+    { "title": "Expand policy engine", "epic": "Policies & Agents", "status": "Backlog", "priority": "Medium" },
+    { "title": "Implement agent catalog", "epic": "Policies & Agents", "status": "Backlog", "priority": "Medium" },
+    { "title": "Add Agents panel in Desktop", "epic": "Policies & Agents", "status": "Backlog", "priority": "Low" },
+
+    /* EPIC 9 — Release */
+    { "title": "Create RELEASE.md", "epic": "Release", "status": "Backlog", "priority": "Low" },
+    { "title": "Create automated build pipeline", "epic": "Release", "status": "Backlog", "priority": "Medium" },
+    { "title": "Create automated ISO packaging", "epic": "Release", "status": "Backlog", "priority": "Medium" },
+    { "title": "Create smoke test suite", "epic": "Release", "status": "Backlog", "priority": "Medium" },
+    { "title": "Create boot test suite", "epic": "Release", "status": "Backlog", "priority": "Medium" }
+  ]
+}
