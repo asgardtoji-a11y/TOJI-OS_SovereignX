@@ -1,0 +1,37 @@
+# name: QEMU Boot Test
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  boot-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install QEMU
+        run: |
+          sudo apt update
+          sudo apt install -y qemu-system-x86
+
+      - name: Build ISO
+        working-directory: build
+        run: |
+          chmod +x build_iso.sh
+          ./build_iso.sh
+
+      - name: Boot ISO in QEMU (headless)
+        run: |
+          timeout 60 qemu-system-x86_64 \
+            -cdrom build/toji-os.iso \
+            -m 2048 \
+            -nographic \
+            -serial mon:stdio || true
+
+      - name: Validate boot log
+        run: |
+          grep -q "toji-init started" build/qemu.log
