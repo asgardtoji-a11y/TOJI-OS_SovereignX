@@ -1,0 +1,44 @@
+# name: Lint & Static Analysis
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Rust
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Rust Lint
+        working-directory: system
+        run: cargo clippy --all-targets --all-features -- -D warnings
+
+      # Python
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Python linters
+        run: pip install black ruff
+
+      - name: Python Lint
+        run: |
+          black --check sovereign_x toji_userland/api
+          ruff check sovereign_x toji_userland/api
+
+      # Flutter
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+
+      - name: Flutter Analyze
+        working-directory: toji_userland/desktop
+        run: flutter analyze
